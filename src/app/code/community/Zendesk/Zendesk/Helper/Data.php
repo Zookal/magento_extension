@@ -109,6 +109,9 @@ class Zendesk_Zendesk_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getOrderDetail($order)
     {
+        // if the admin site has a custom URL, use it
+        $urlModel = Mage::getModel('adminhtml/url')->setStore('admin');
+
         $orderInfo = array(
             'id'        => $order->getIncrementId(),
             'status'    => $order->getStatus(),
@@ -120,11 +123,11 @@ class Zendesk_Zendesk_Helper_Data extends Mage_Core_Helper_Abstract
                 'ip'    => $order->getRemoteIp(),
                 'guest' => (bool)$order->getCustomerIsGuest(),
             ),
-            'store'     => $order->getStoreName(),
-            'total'     => $order->getGrandTotal(),
-            'currency'  => $order->getOrderCurrencyCode(),
-            'items'     => array(),
-            'admin_url' => Mage::helper('adminhtml')->getUrl('adminhtml/sales_order/view', array('order_id' => $order->getId())),
+            'store' => $order->getStoreName(),
+            'total' => $order->getGrandTotal(),
+            'currency' => $order->getOrderCurrencyCode(),
+            'items' => array(),
+            'admin_url' => $urlModel->getUrl('adminhtml/sales_order/view', array('order_id' => $order->getId())),
         );
 
         foreach ($order->getItemsCollection(array(), true) as $item) {
