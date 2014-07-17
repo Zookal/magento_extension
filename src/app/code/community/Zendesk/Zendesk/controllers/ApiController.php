@@ -35,7 +35,7 @@ class Zendesk_Zendesk_ApiController extends Mage_Core_Controller_Front_Action
 
         if (!$tokenString) {
             // Certain server configurations fail to extract headers from the request, see PR #24.
-            Mage::log('Unable to extract authorization header from request.', null, 'zendesk.log');
+            Mage::getSingleton('zendesk/logger')->debug('Unable to extract authorization header from request.');
 
             $this->getResponse()
                 ->setBody(json_encode(array('success' => false, 'message' => 'Unable to extract authorization header from request')))
@@ -66,7 +66,7 @@ class Zendesk_Zendesk_ApiController extends Mage_Core_Controller_Front_Action
                     ->setHttpResponseCode(403)
                     ->setHeader('Content-type', 'application/json', true);
 
-                Mage::log('API access disabled.', null, 'zendesk.log');
+                Mage::getSingleton('zendesk/logger')->log('API access disabled.');
 
                 return false;
             }
@@ -78,7 +78,7 @@ class Zendesk_Zendesk_ApiController extends Mage_Core_Controller_Front_Action
                     ->setHttpResponseCode(401)
                     ->setHeader('Content-type', 'application/json', true);
 
-                Mage::log('No authorisation token provided.', null, 'zendesk.log');
+                Mage::getSingleton('zendesk/logger')->log('No authorisation token provided.');
 
                 return false;
             }
@@ -89,7 +89,7 @@ class Zendesk_Zendesk_ApiController extends Mage_Core_Controller_Front_Action
                     ->setHttpResponseCode(401)
                     ->setHeader('Content-type', 'application/json', true);
 
-                Mage::log('Not authorised.', null, 'zendesk.log');
+                Mage::getSingleton('zendesk/logger')->log('Not authorised.');
 
                 return false;
             }
