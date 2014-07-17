@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2012 Zendesk.
  *
@@ -14,25 +15,78 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-class Zendesk_Zendesk_Block_Adminhtml_Order_View_Tickets extends Mage_Adminhtml_Block_Sales_Order_Abstract
+class Zendesk_Zendesk_Block_Adminhtml_Order_View_Tickets extends Mage_Adminhtml_Block_Widget_Container
+    implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
-    public function __construct()
+
+    /**
+     * Retrieve available order
+     *
+     * @return Mage_Sales_Model_Order
+     */
+    public function getOrder()
     {
-        parent::__construct();
-        $this->setTemplate('zendesk/order/tickets.phtml');
+        if ($this->hasOrder()) {
+            return $this->getData('order');
+        }
+        if (Mage::registry('current_order')) {
+            return Mage::registry('current_order');
+        }
+        if (Mage::registry('order')) {
+            return Mage::registry('order');
+        }
+        Mage::throwException(Mage::helper('sales')->__('Cannot get order instance'));
     }
-    
-    public function getTickets($orderId)
+
+    public function getTabClass()
     {
-        return array(
-            array(
-                'id' => '',
-                'url' => '',
-                'subject' => '',
-                'status' => '',
-                'updated_at' => '',
-            )
-        );
+        return 'ajax';
+    }
+
+    /**
+     * @return string
+     */
+    public function getTabUrl()
+    {
+        return $this->getUrl('*/zendesk/salesOrderViewTicketGrid', array('order_id' => $this->getOrder()->getId() ));
+    }
+
+    /**
+     * Return Tab label
+     *
+     * @return string
+     */
+    public function getTabLabel()
+    {
+        return $this->helper('AdvancedStock')->__('Zendesk Tickets');
+    }
+
+    /**
+     * Return Tab title
+     *
+     * @return string
+     */
+    public function getTabTitle()
+    {
+        return $this->helper('AdvancedStock')->__('Zendesk Tickets');
+    }
+
+    /**
+     * Can show tab in tabs
+     * @return boolean
+     */
+    public function canShowTab()
+    {
+        return Mage::getStoreConfigFlag('zendesk/features/show_on_order');
+    }
+
+    /**
+     * Tab is hidden
+     *
+     * @return boolean
+     */
+    public function isHidden()
+    {
+        return false;
     }
 }

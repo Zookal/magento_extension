@@ -17,10 +17,6 @@
 ?>
 <?php
 
-if(!Mage::getStoreConfig('zendesk/features/show_on_order')) {
-    return;
-}
-
 $_order = $this->getOrder();
 $tickets = null;
 
