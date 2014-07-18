@@ -22,13 +22,11 @@ class Zendesk_Zendesk_Block_Adminhtml_Order_View_TicketsGrid extends Mage_Adminh
     {
         parent::__construct();
         $this->setId('ZendeskSalesOrderGrid');
-        $this->setEmptyText($this->__('No items'));
+        $this->setEmptyText($this->__('No tickets found for order %s', $this->getOrder()->getIncrementId()));
         $this->setSaveParametersInSession(true);
+        $this->setFilterVisibility(false);
         $this->setUseAjax(true);
-        $this->setVarNameFilter('all_tickets');
         $this->setRowClickCallback(false);
-        //$this->setDefaultSort('increment_id', 'DESC');
-        // $this->setTemplate('zendesk/order/tickets.phtml');
     }
 
     /**
@@ -36,17 +34,20 @@ class Zendesk_Zendesk_Block_Adminhtml_Order_View_TicketsGrid extends Mage_Adminh
      */
     protected function _prepareCollection()
     {
-        $tickets = array();
+        $collection = new Varien_Data_Collection();
+        $tickets    = array();
         try {
-            //$tickets = Mage::getModel('zendesk/api_tickets')->forOrder($this->getOrder()->getIncrementId());
-            $tickets = Mage::getModel('zendesk/api_tickets')->forRequester($this->getOrder()->getCustomerEmail());
+            $tickets = Mage::getModel('zendesk/api_tickets')->forOrder($this->getOrder()->getIncrementId());
         } catch (Exception $e) {
             // Don't do anything, just don't show the tickets
         }
-        $collection = new Varien_Data_Collection();
-        foreach ($tickets as $ticket) {
-            // @todo <?php $t = Mage::getModel('zendesk/api_tickets')->get($ticket['id'], true); ?>
-            $collection->addItem(new Varien_Object($ticket));
+        if (false !== $tickets) {
+            foreach ($tickets as $ticket) {
+                $t    = Mage::getModel('zendesk/api_tickets')->get($ticket['id'], true);
+                $item = new Varien_Object($ticket);
+                $item->setTicketDetail($t);
+                $collection->addItem($item);
+            }
         }
         $this->setCollection($collection);
         return parent::_prepareCollection();
@@ -92,12 +93,32 @@ class Zendesk_Zendesk_Block_Adminhtml_Order_View_TicketsGrid extends Mage_Adminh
             'filter'   => false,
             'sortable' => false
         ));
-        $this->addColumn('status', array(
-            'header'   => Mage::helper('zendesk')->__('Status'),
-            'index'    => 'status',
+        $this->addColumn('ticket_detail_group', array(
+            'header'   => Mage::helper('zendesk')->__('Group'),
+            'index'    => 'ticket_detail_group',
+            'renderer' => 'zendesk/adminhtml_order_widget_grid_column_renderer_ticketGroup',
             'filter'   => false,
             'sortable' => false
         ));
+
+        $this->addColumn('ticket_detail_assignee', array(
+            'header'   => Mage::helper('zendesk')->__('Assignee'),
+            'index'    => 'ticket_detail_assignee',
+            'renderer' => 'zendesk/adminhtml_order_widget_grid_column_renderer_ticketAssignee',
+            'filter'   => false,
+            'sortable' => false
+        ));
+
+        $this->addColumn('action',
+            array(
+                'header'   => Mage::helper('catalog')->__('Action'),
+                'width'    => '50px',
+                'type'     => 'action',
+                'renderer' => 'zendesk/adminhtml_order_widget_grid_column_renderer_viewTicket',
+                'filter'   => false,
+                'sortable' => false,
+                'index'    => 'product_id',
+            ));
 
         return parent::_prepareColumns();
     }
