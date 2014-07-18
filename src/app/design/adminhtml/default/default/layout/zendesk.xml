@@ -42,10 +42,19 @@
     </adminhtml_zendesk_salesorderviewticketgrid>
 
     <adminhtml_customer_edit>
-        <reference name="customer_edit_tab_view">
-            <block type="adminhtml/template" after="-" name="zendesk.tickets" template="zendesk/customer/tickets.phtml"/>
+        <reference name="customer_edit_tabs">
+            <action method="addTab">
+                <name>zendesk_customer_edit_tickets</name>
+                <block>zendesk/adminhtml_customer_edit_tickets</block>
+            </action>
         </reference>
     </adminhtml_customer_edit>
+
+    <adminhtml_zendesk_customereditticketgrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="zendesk/adminhtml_customer_edit_ticketsGrid" name="zendesk_customer_edit_tickets_grid"/>
+        </block>
+    </adminhtml_zendesk_customereditticketgrid>
 
     <adminhtml_zendesk_index>
         <reference name="left">

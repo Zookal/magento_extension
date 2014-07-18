@@ -366,4 +366,10 @@ class Zendesk_Zendesk_Adminhtml_ZendeskController extends Mage_Adminhtml_Control
         $this->loadLayout();
         $this->renderLayout();
     }
+
+    public function customerEditTicketGridAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
 }
