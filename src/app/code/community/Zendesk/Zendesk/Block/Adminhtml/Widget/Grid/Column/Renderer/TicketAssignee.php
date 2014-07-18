@@ -15,10 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class Zendesk_Zendesk_Block_Adminhtml_Order_Widget_Grid_Column_Renderer_ViewTicket extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
+class Zendesk_Zendesk_Block_Adminhtml_Widget_Grid_Column_Renderer_TicketAssignee extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
     public function render(Varien_Object $row)
     {
-        return '<a href="' . Mage::helper('zendesk')->getUrl('ticket', $row->getId()) . '" target="_blank">' . Mage::helper('zendesk')->__('View') . '</a>';
+        $assigneeId = $row->getAssigneeId();
+        $group      = $row->getTicketDetail();
+
+        if (true === empty($assigneeId)) {
+            return '';
+        }
+
+        return $group['assignee']['name'];
     }
 }

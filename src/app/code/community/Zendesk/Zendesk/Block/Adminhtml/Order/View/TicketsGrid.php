@@ -96,7 +96,7 @@ class Zendesk_Zendesk_Block_Adminhtml_Order_View_TicketsGrid extends Mage_Adminh
         $this->addColumn('ticket_detail_group', array(
             'header'   => Mage::helper('zendesk')->__('Group'),
             'index'    => 'ticket_detail_group',
-            'renderer' => 'zendesk/adminhtml_order_widget_grid_column_renderer_ticketGroup',
+            'renderer' => 'zendesk/adminhtml_widget_grid_column_renderer_ticketGroup',
             'filter'   => false,
             'sortable' => false
         ));
@@ -104,7 +104,7 @@ class Zendesk_Zendesk_Block_Adminhtml_Order_View_TicketsGrid extends Mage_Adminh
         $this->addColumn('ticket_detail_assignee', array(
             'header'   => Mage::helper('zendesk')->__('Assignee'),
             'index'    => 'ticket_detail_assignee',
-            'renderer' => 'zendesk/adminhtml_order_widget_grid_column_renderer_ticketAssignee',
+            'renderer' => 'zendesk/adminhtml_widget_grid_column_renderer_ticketAssignee',
             'filter'   => false,
             'sortable' => false
         ));
@@ -114,7 +114,7 @@ class Zendesk_Zendesk_Block_Adminhtml_Order_View_TicketsGrid extends Mage_Adminh
                 'header'   => Mage::helper('catalog')->__('Action'),
                 'width'    => '50px',
                 'type'     => 'action',
-                'renderer' => 'zendesk/adminhtml_order_widget_grid_column_renderer_viewTicket',
+                'renderer' => 'zendesk/adminhtml_widget_grid_column_renderer_viewTicket',
                 'filter'   => false,
                 'sortable' => false,
                 'index'    => 'product_id',

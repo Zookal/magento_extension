@@ -15,17 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class Zendesk_Zendesk_Block_Adminhtml_Order_Widget_Grid_Column_Renderer_TicketAssignee extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
+class Zendesk_Zendesk_Block_Adminhtml_Widget_Grid_Column_Renderer_TicketGroup extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
     public function render(Varien_Object $row)
     {
-        $assigneeId = $row->getAssigneeId();
-        $group      = $row->getTicketDetail();
+        $groupId = $row->getGroupId();
+        $group   = $row->getTicketDetail();
 
-        if (true === empty($assigneeId)) {
+        if (true === empty($groupId)) {
             return '';
         }
 
-        return $group['assignee']['name'];
+        return $group['group']['name'];
     }
 }
