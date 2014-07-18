@@ -29,30 +29,30 @@
         </reference>
         <reference name="sales_order_tabs">
             <action method="addTab">
-                <name>zendesk_order_view_tickets</name>
-                <block>zendesk/adminhtml_order_view_tickets</block>
+                <name>zendesk_order_view_tab_tickets</name>
+                <block>zendesk/adminhtml_order_view_tab_tickets</block>
             </action>
         </reference>
     </adminhtml_sales_order_view>
 
     <adminhtml_zendesk_salesorderviewticketgrid>
         <block type="core/text_list" name="root" output="toHtml">
-            <block type="zendesk/adminhtml_order_view_ticketsGrid" name="zendesk_order_view_tickets_grid"/>
+            <block type="zendesk/adminhtml_order_view_tab_ticketsGrid" name="zendesk_order_view_tab_tickets_grid"/>
         </block>
     </adminhtml_zendesk_salesorderviewticketgrid>
 
     <adminhtml_customer_edit>
         <reference name="customer_edit_tabs">
             <action method="addTab">
-                <name>zendesk_customer_edit_tickets</name>
-                <block>zendesk/adminhtml_customer_edit_tickets</block>
+                <name>zendesk_customer_edit_tab_tickets</name>
+                <block>zendesk/adminhtml_customer_edit_tab_tickets</block>
             </action>
         </reference>
     </adminhtml_customer_edit>
 
     <adminhtml_zendesk_customereditticketgrid>
         <block type="core/text_list" name="root" output="toHtml">
-            <block type="zendesk/adminhtml_customer_edit_ticketsGrid" name="zendesk_customer_edit_tickets_grid"/>
+            <block type="zendesk/adminhtml_customer_edit_tab_ticketsGrid" name="zendesk_customer_edit_tab_tickets_grid"/>
         </block>
     </adminhtml_zendesk_customereditticketgrid>
 

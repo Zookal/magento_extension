@@ -15,21 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class Zendesk_Zendesk_Block_Adminhtml_Order_View_TicketsGrid extends Zendesk_Zendesk_Block_Adminhtml_Grid_AbstractTicketsGrid
+class Zendesk_Zendesk_Block_Adminhtml_Customer_Edit_Tab_TicketsGrid extends Zendesk_Zendesk_Block_Adminhtml_Grid_AbstractTicketsGrid
 
 {
     public function __construct()
     {
         parent::__construct();
-        $this->setId('ZendeskSalesOrderGrid');
-        $this->setEmptyText($this->__('No tickets found for order %s', $this->getOrder()->getIncrementId()));
+        $this->setId('ZendeskCustomerEditGrid');
+        $this->setEmptyText($this->__('No tickets found for customer %s', $this->getCustomer()->getEmail()));
     }
 
     protected function _getTickets()
     {
         $tickets = array();
         try {
-            $tickets = Mage::getModel('zendesk/api_tickets')->forOrder($this->getOrder()->getIncrementId());
+            $tickets = Mage::getModel('zendesk/api_tickets')->forRequester($this->getCustomer()->getEmail());
         } catch (Exception $e) {
             // Don't do anything, just don't show the tickets
         }
@@ -41,28 +41,29 @@ class Zendesk_Zendesk_Block_Adminhtml_Order_View_TicketsGrid extends Zendesk_Zen
      */
     public function getGridUrl()
     {
-        return $this->getUrl('*/zendesk/salesOrderViewTicketGrid', array('order_id' => $this->getOrderIdFromRequest()));
+        return $this->getUrl('*/zendesk/customerEditTicketGrid', array('customer_id' => $this->getCustomer()->getId()));
     }
 
     /**
      * @return int
      */
-    public function getOrderIdFromRequest()
+    public function getCustomerIdFromRequest()
     {
-        return (int)Mage::app()->getRequest()->getParam('order_id', 0);
+        return (int)Mage::app()->getRequest()->getParam('customer_id', 0);
     }
 
     /**
-     * Retrieve available order
+     * Retrieve customer object
      *
-     * @return Mage_Sales_Model_Order
+     * @return Mage_Customer_Model_Customer
      */
-    public function getOrder()
+    public function getCustomer()
     {
-        if ($this->hasOrder()) {
-            return $this->getData('order');
+
+        if ($this->hasCustomer()) {
+            return $this->getData('customer');
         }
-        $this->setData('order', Mage::getModel('sales/order')->load($this->getOrderIdFromRequest()));
-        return $this->getData('order');
+        $this->setData('customer', Mage::getModel('customer/customer')->load($this->getCustomerIdFromRequest()));
+        return $this->getData('customer');
     }
 }

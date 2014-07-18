@@ -15,18 +15,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class Zendesk_Zendesk_Block_Adminhtml_Customer_Edit_Tickets extends Mage_Adminhtml_Block_Widget_Container
+class Zendesk_Zendesk_Block_Adminhtml_Order_View_Tab_Tickets extends Mage_Adminhtml_Block_Widget_Container
     implements Mage_Adminhtml_Block_Widget_Tab_Interface
 {
 
     /**
-     * Retrieve customer object
+     * Retrieve available order
      *
-     * @return Mage_Customer_Model_Customer
+     * @return Mage_Sales_Model_Order
      */
-    public function getCustomer()
+    public function getOrder()
     {
-        return Mage::registry('current_customer');
+        if ($this->hasOrder()) {
+            return $this->getData('order');
+        }
+        if (Mage::registry('current_order')) {
+            return Mage::registry('current_order');
+        }
+        if (Mage::registry('order')) {
+            return Mage::registry('order');
+        }
+        Mage::throwException(Mage::helper('sales')->__('Cannot get order instance'));
     }
 
     public function getTabClass()
@@ -39,7 +48,7 @@ class Zendesk_Zendesk_Block_Adminhtml_Customer_Edit_Tickets extends Mage_Adminht
      */
     public function getTabUrl()
     {
-        return $this->getUrl('*/zendesk/customerEditTicketGrid', array('customer_id' => $this->getCustomer()->getId()));
+        return $this->getUrl('*/zendesk/salesOrderViewTicketGrid', array('order_id' => $this->getOrder()->getId() ));
     }
 
     /**
@@ -68,7 +77,7 @@ class Zendesk_Zendesk_Block_Adminhtml_Customer_Edit_Tickets extends Mage_Adminht
      */
     public function canShowTab()
     {
-        return Mage::getStoreConfigFlag('zendesk/features/show_on_customer');
+        return Mage::getStoreConfigFlag('zendesk/features/show_on_order');
     }
 
     /**
