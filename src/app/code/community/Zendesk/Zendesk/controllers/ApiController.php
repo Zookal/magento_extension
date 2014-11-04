@@ -98,14 +98,14 @@ class Zendesk_Zendesk_ApiController extends Mage_Core_Controller_Front_Action
         return true;
     }
 
-    public function ordersAction($orderId)
+    public function ordersAction()
     {
         if(!$this->_authorise()) {
             return $this;
         }
 
         $sections = explode('/', trim($this->getRequest()->getPathInfo(), '/'));
-        $orderId = $sections[3];
+        $orderId = (int)(isset($sections[3]) ? $sections[3] : 0);
 
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
