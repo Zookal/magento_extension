@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2012 Zendesk.
+ * Copyright 2014 Zendesk.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-class Zendesk_Zendesk_Block_Adminhtml_Order_View_Tickets extends Mage_Adminhtml_Block_Sales_Order_Abstract
+class Zendesk_Zendesk_Block_Adminhtml_Widget_Grid_Column_Renderer_ViewTicket extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
 {
-    public function __construct()
+    public function render(Varien_Object $row)
     {
-        parent::__construct();
-        $this->setTemplate('zendesk/order/tickets.phtml');
-    }
-    
-    public function getTickets($orderId)
-    {
-        return array(
-            array(
-                'id' => '',
-                'url' => '',
-                'subject' => '',
-                'status' => '',
-                'updated_at' => '',
-            )
-        );
+        return '<a href="' . Mage::helper('zendesk')->getUrl('ticket', $row->getId()) . '" target="_blank">' . Mage::helper('zendesk')->__('View') . '</a>';
     }
 }

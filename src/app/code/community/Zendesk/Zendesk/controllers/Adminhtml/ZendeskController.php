@@ -360,4 +360,16 @@ class Zendesk_Zendesk_Adminhtml_ZendeskController extends Mage_Adminhtml_Control
 
         $this->_redirect('adminhtml/system_config/edit/section/zendesk');
     }
+
+    public function salesOrderViewTicketGridAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
+
+    public function customerEditTicketGridAction()
+    {
+        $this->loadLayout();
+        $this->renderLayout();
+    }
 }
